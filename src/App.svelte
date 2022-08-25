@@ -1,4 +1,5 @@
 <script>
+import FileChoose from './components/FileChoose.svelte'
 import Greet from './components/Greet.svelte'
 
 let name = "name"
@@ -39,5 +40,10 @@ const switchTab = tab => () => {
     </ul>
   </div>
   <p>{name}</p>
+
+  {#if (activeTab == "TJ")}
+    <FileChoose />
+  {/if}
+
 </main>
 
