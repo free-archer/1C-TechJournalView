@@ -1,6 +1,5 @@
 <script>
 import FileChoose from './components/FileChoose.svelte'
-import Greet from './components/Greet.svelte'
 
 let name = "name"
 let activeTab = "TJ"

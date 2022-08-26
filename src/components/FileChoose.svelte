@@ -1,11 +1,16 @@
 <script>
+   import {parse} from '../libs/parse.js'
+
   let filename = ""
+  let files = []
 
   function parseTJ() {
     if (filename == "") {
       alert("Не выбран файл лога")
       return
     }
+
+    parse(files)
   }
 
 </script>
@@ -18,7 +23,7 @@
 
   <div class="file">
     <label class="file-label">
-      <input bind:value={filename} class="file-input" type="file" name="resume" >
+      <input bind:value={filename} bind:files={files} class="file-input" type="file" name="resume" id="file">
       <span class="file-cta">
         <span class="file-icon">
           <i class="fas fa-upload"></i>
