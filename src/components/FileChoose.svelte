@@ -1,8 +1,10 @@
 <script>
-   import {parse} from '../libs/parse.js'
+  import {ParseTJ} from '../libs/parse.js'
 
   let filename = ""
   let files = []
+  let mParams = undefined
+  let myJsonString = ""
 
   function parseTJ() {
     if (filename == "") {
@@ -10,7 +12,11 @@
       return
     }
 
-    parse(files)
+    debugger
+    mParams = ParseTJ.parse(files, filename)
+    console.log(mParams)
+    myJsonString = JSON.stringify(mParams);
+    console.log(myJsonString)
   }
 
 </script>
@@ -43,6 +49,7 @@
   </button>  
 
 </div>
+<p>{myJsonString}</p>
 
 <style>
   .input_file {
