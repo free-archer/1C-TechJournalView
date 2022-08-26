@@ -19,9 +19,9 @@ const switchTab = tab => () => {
 
 <main class="container is-widescreen">
 
-  <div class="tabs is-boxed">
+  <div class="tabs is-centered is-toggle m-2">
     <ul>
-      <li class="is-active">
+      <li>
         <button 
           class:is-active={activeTab == "TJ"} 
           on:click={switchTab("TJ")} 
@@ -29,7 +29,7 @@ const switchTab = tab => () => {
           Технологический журнал
         </button>
       </li>
-      <li>
+      <li class="ml-2">
         <button 
           class:is-active={activeTab == "Setting"} 
           on:click={switchTab("Setting")} 
@@ -39,7 +39,6 @@ const switchTab = tab => () => {
       </li>
     </ul>
   </div>
-  <p>{name}</p>
 
   {#if (activeTab == "TJ")}
     <FileChoose />

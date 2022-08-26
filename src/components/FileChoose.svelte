@@ -1,8 +1,17 @@
 <script>
   let filename = ""
+
+  function parseTJ() {
+    if (filename == "") {
+      alert("Не выбран файл лога")
+      return
+    }
+  }
+
 </script>
 
-<div class="level-left">
+<div class="is-flex is-flex-direction-row is-justify-content-flex-start m-2">
+
   <div class="input_file pr-3 is-widescreen">
     <input value={filename} class="input" type="text" placeholder="Text input">
   </div>
@@ -20,6 +29,14 @@
       </span>
     </label>
   </div>
+
+  <button 
+    disabled={filename==""}
+    on:click={parseTJ} 
+    class="button is-info ml-2">
+    Прочитать
+  </button>  
+
 </div>
 
 <style>
