@@ -12,12 +12,18 @@
       return
     }
 
-    debugger
-    mParams = ParseTJ.parse(files, filename)
-    console.log(mParams)
-    myJsonString = JSON.stringify(mParams);
-    console.log(myJsonString)
+    const reader = ParseTJ.parse(files, filename)
+
+    reader.onloadend = () => {
+            const text = reader.result
+            console.log(text);
+
+            mParams = ParseTJ.parseFile(text)
+            console.log(mParams)
+
+        }    
   }
+
 
 </script>
 
@@ -49,7 +55,7 @@
   </button>  
 
 </div>
-<p>{myJsonString}</p>
+<p>{mParams}</p>
 
 <style>
   .input_file {

@@ -7,23 +7,13 @@ export class ParseTJ {
     text= ""
     mParams = undefined
 
-
-
     file = new Blob
     filename = ""
-
-    readF = () => {
-        console.log("read f")
-        console.log("read f")
-    }
-
 
     static parse(files, filename) {
         this.time_start = performance.now()
 
         this.filename = filename
-
-
 
         if (files.length === 1) {
             this.file = files[0]
@@ -31,28 +21,22 @@ export class ParseTJ {
             return
         }
         
-
         let reader = new FileReader()
-        let text = reader.readAsText(this.file)
+        reader.readAsText(this.file)
+        return reader
 
         reader.onloadend = () => {
             const text = reader.result
             console.log(text);
-            this.parseFile(text)
+
+            return this.parseFile(text)
         }
         
-        // reader.onloadend = () => {
-        //     this.readF()
-        // }
-
         reader.onerror = function() {
             console.log(reader.error);
             return
         }
-
-        debugger
-
-        return this.mParams
+        
     }
 
 
@@ -118,8 +102,10 @@ export class ParseTJ {
         this.time_end = performance.now()
         this.duration = this.time_end - this.time_start
         // console.log('Выполнено! Время выполнения = %s ms', time_end-time_start)  
-        //console.log(mParams)
-        debugger
+        console.log(mParams)
+
         this.mParams =mParams
+
+        return mParams
     }
 }
