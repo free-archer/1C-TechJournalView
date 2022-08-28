@@ -4,14 +4,9 @@ import FileChoose from './components/FileChoose.svelte'
 let name = "name"
 let activeTab = "TJ"
 
-function setName() {
-  name = "Sem"
-}
-
 const switchTab = tab => () => {
   activeTab = tab; 
   name = tab
-  console.log(tab)
 }
 
 </script>

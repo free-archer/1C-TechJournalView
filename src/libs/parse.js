@@ -20,12 +20,11 @@ export function parseFile(filename, text) {
         } else {
             str_log = str_log+"-#-"+str
         }
-    // console.log(str_log)
-    
     }
+    // console.log(mainArray)
 
     //2. Получаем список параметров
-    const dictParam = new Map()
+    
     const mParams = []
     const mColums = new Set()
 
@@ -33,6 +32,8 @@ export function parseFile(filename, text) {
     const [, year, month, day, hour] = matchesFile
     
     for (let elem of mainArray) {
+        const dictParam = new Map()
+        
         const matchesTime = elem.match(/(\d{2}):(\d{2}).(\d{6})/)
         const [minute, second, msec] = matchesTime
         const date_time_str = `20${year}-${month}-${day} ${hour}:${minute}:${second}.${msec}`

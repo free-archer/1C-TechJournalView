@@ -1,12 +1,12 @@
 <script>
   import {parseFile} from '../libs/parse.js'
-  import {mParamsStore} from '../libs/store'
+  import {mParamsStore, mColumsStore} from '../libs/store'
+
+  import Table from './Table.svelte'
 
   let filename = ""
   let files = []
-  let mParams = undefined
-  let myJsonString = ""
-
+    
   function parseTJ() {
     if (filename == "") {
       alert("Не выбран файл лога")
@@ -24,13 +24,14 @@
 
     reader.onloadend = () => {
             const text = reader.result
-            console.log(text);
 
-            mParams = parseFile(filename, text)
-            console.log(mParams)
+            const parseDate = parseFile(filename, text)
 
-            mParamsStore.set(mParams)
+            mParamsStore.set(parseDate.mParams)
+            mColumsStore.set(Array.from(parseDate.mColums))
 
+            // console.log($mParamsStore)
+            // console.log($mColumsStore)            
         } 
     
     reader.onerror = function() {
@@ -71,13 +72,11 @@
   </button>  
 
 </div>
-<p>params:</p>
-{#each $mParamsStore as params, i}
-<p>{i}:</p>
-<p>
-{JSON.stringify(Array.from(params, ([name, value]) => ({ name, value })))}
-</p>
-{/each}
+
+<div class="table-container">
+  <Table />
+
+</div>
 
 
 <style>
