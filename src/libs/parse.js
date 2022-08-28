@@ -25,9 +25,9 @@ export function parseFile(filename, text) {
     }
 
     //2. Получаем список параметров
-    console.log("parse")
     const dictParam = new Map()
     const mParams = []
+    const mColums = new Set()
 
     const matchesFile = filename.match(/(\d{2})(\d{2})(\d{2})(\d{2})/)
     const [, year, month, day, hour] = matchesFile
@@ -36,22 +36,31 @@ export function parseFile(filename, text) {
         const matchesTime = elem.match(/(\d{2}):(\d{2}).(\d{6})/)
         const [minute, second, msec] = matchesTime
         const date_time_str = `20${year}-${month}-${day} ${hour}:${minute}:${second}.${msec}`
-        dictParam.set("time", date_time_str)
+
+        addToDict(["time", date_time_str], dictParam, mColums) 
 
         let matches = elem.match(/,(\w+)='([^']+)|,(\w+)="([^"]+)|,([A-Za-z0-9А-Яа-я:]+)=([^,]+)/g)
         for (let params of matches) {
-            if (params[0] === ",") {
-                params = params.slice(1)
-            }
             const mparams = params.split("=")
             if (mparams.length == 2) {
-                dictParam.set(mparams[0].toLowerCase(), mparams[1].replace("'","").replace("''","").replace("-#-", '\n'))
+                addToDict(mparams, dictParam, mColums) 
             }
         }
-
         mParams.push(dictParam)
     }
 
     // console.log(mParams)
-    return mParams
+    return {mParams, mColums}
+}
+
+function addToDict(mparams, dictParam, mColums) {
+    let pName = mparams[0].toLowerCase()
+    const pValue = mparams[1].replace("'","").replace("''","").replace("-#-", '\n')
+
+    if (pName[0] === ",") {
+        pName = pName.slice(1)
+    }
+
+    dictParam.set(pName, pValue)
+    mColums.add(pName)
 }
