@@ -1,10 +1,10 @@
 'use strict';
 
 export function parseFile(filename, text) {
+    console.log("Start Parse")
     //1. Создаем массив строк склеивая их по регулярному выражению
     const mainArray= []
 
-    console.log("Start Parse")
     let str_log = ""
     for (let str of text.split('\n')) {
     str.trim()
@@ -24,7 +24,8 @@ export function parseFile(filename, text) {
     // console.log(mainArray)
 
     //2. Получаем список параметров
-    
+    console.log("Get params")
+
     const mParams = []
     const mColums = new Set()
 
@@ -33,7 +34,7 @@ export function parseFile(filename, text) {
     
     for (let elem of mainArray) {
         const dictParam = new Map()
-        
+
         const matchesTime = elem.match(/(\d{2}):(\d{2}).(\d{6})/)
         const [minute, second, msec] = matchesTime
         const date_time_str = `20${year}-${month}-${day} ${hour}:${minute}:${second}.${msec}`
@@ -50,7 +51,7 @@ export function parseFile(filename, text) {
         mParams.push(dictParam)
     }
 
-    // console.log(mParams)
+    console.log("End parse")
     return {mParams, mColums}
 }
 

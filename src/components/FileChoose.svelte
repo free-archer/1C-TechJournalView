@@ -1,6 +1,6 @@
 <script>
   import {parseFile} from '../libs/parse.js'
-  import {mParamsStore, mColumsStore} from '../libs/store'
+  import {mParamsStore, mColumsStore, time_readStore, time_parseStore, time_storeStore} from '../libs/store'
 
   import Table from './Table.svelte'
 
@@ -13,25 +13,35 @@
       return
     }
 
-    // const reader = ParseTJ.parse(files, filename)
     if (files.length == 0) {
       console.log("Пустой массив файлов")
       return
     }
         
+    const time_start = performance.now()
+
     let reader = new FileReader()
     reader.readAsText(files[0])
 
     reader.onloadend = () => {
             const text = reader.result
 
+            const time_read = performance.now()
+            time_readStore.set(time_read-time_start)
+            console.log(`Прочитали файл за: ${time_read-time_start} ms`)  
+
             const parseDate = parseFile(filename, text)
 
-            mParamsStore.set(parseDate.mParams)
-            mColumsStore.set(Array.from(parseDate.mColums))
+            const time_parse = performance.now()
+            time_parseStore.set(time_parse-time_start)
+            console.log(`Парсинг файла за: ${time_parse-time_start} ms`)  
 
-            // console.log($mParamsStore)
-            // console.log($mColumsStore)            
+            mParamsStore.set(parseDate.mParams)
+            mColumsStore.set(Array.from(parseDate.mColums)) 
+            
+            const time_store = performance.now()
+            time_parseStore.set(time_store-time_start)
+            console.log(`Отправили в store за: ${time_store-time_start} ms`)  
         } 
     
     reader.onerror = function() {
@@ -75,9 +85,11 @@
 
 <div class="table-container">
   <Table />
-
 </div>
 
+<p>{$time_readStore}</p>
+<p>{$time_parseStore}</p>
+<p>{$time_storeStore}</p>
 
 <style>
   .input_file {

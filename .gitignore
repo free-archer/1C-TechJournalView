@@ -1,5 +1,7 @@
 /node_modules
 /build
+/exemplelog
+/dist/
 .vscode
 *.log
 Cargo.lock

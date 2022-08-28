@@ -34,11 +34,11 @@ import {mParamsStore, mColumsStore} from '../libs/store'
     
      </div>
 
-     <button 
+     <!-- <button 
      on:click={Test} 
      class="button is-info">
      Test
-   </button>  
+   </button>   -->
     
    <style>
       .table
