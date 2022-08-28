@@ -1,4 +1,5 @@
 'use strict';
+import {mParamsStore} from './store'
 
 export class ParseTJ {
     time_start = undefined
@@ -105,6 +106,8 @@ export class ParseTJ {
         console.log(mParams)
 
         this.mParams =mParams
+
+        mParamsStore.set(mParams)
 
         return mParams
     }

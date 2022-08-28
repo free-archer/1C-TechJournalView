@@ -1,5 +1,6 @@
 <script>
   import {ParseTJ} from '../libs/parse.js'
+  import {mParamsStore} from '../libs/store'
 
   let filename = ""
   let files = []
@@ -55,7 +56,14 @@
   </button>  
 
 </div>
-<p>{mParams}</p>
+<p>params:</p>
+{#each $mParamsStore as params, i}
+<p>{i}:</p>
+<p>
+  {JSON.stringify(Array.from(params, ([name, value]) => ({ name, value })))}
+</p>
+{/each}
+
 
 <style>
   .input_file {
