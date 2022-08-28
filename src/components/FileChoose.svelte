@@ -1,5 +1,5 @@
 <script>
-  import {ParseTJ} from '../libs/parse.js'
+  import {parseFile} from '../libs/parse.js'
   import {mParamsStore} from '../libs/store'
 
   let filename = ""
@@ -13,16 +13,31 @@
       return
     }
 
-    const reader = ParseTJ.parse(files, filename)
+    // const reader = ParseTJ.parse(files, filename)
+    if (files.length == 0) {
+      console.log("Пустой массив файлов")
+      return
+    }
+        
+    let reader = new FileReader()
+    reader.readAsText(files[0])
 
     reader.onloadend = () => {
             const text = reader.result
             console.log(text);
 
-            mParams = ParseTJ.parseFile(text)
+            mParams = parseFile(filename, text)
             console.log(mParams)
 
-        }    
+            mParamsStore.set(mParams)
+
+        } 
+    
+    reader.onerror = function() {
+        console.log(reader.error);
+        return
+    }
+   
   }
 
 
@@ -60,7 +75,7 @@
 {#each $mParamsStore as params, i}
 <p>{i}:</p>
 <p>
-  {JSON.stringify(Array.from(params, ([name, value]) => ({ name, value })))}
+{JSON.stringify(Array.from(params, ([name, value]) => ({ name, value })))}
 </p>
 {/each}
 

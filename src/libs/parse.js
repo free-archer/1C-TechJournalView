@@ -1,114 +1,57 @@
 'use strict';
-import {mParamsStore} from './store'
 
-export class ParseTJ {
-    time_start = undefined
-    time_end = undefined
-    static duration = 0
-    text= ""
-    mParams = undefined
+export function parseFile(filename, text) {
+    //1. Создаем массив строк склеивая их по регулярному выражению
+    const mainArray= []
 
-    file = new Blob
-    filename = ""
+    console.log("Start Parse")
+    let str_log = ""
+    for (let str of text.split('\n')) {
+    str.trim()
 
-    static parse(files, filename) {
-        this.time_start = performance.now()
+    const rx = new RegExp("\\d{2}:\\d{2}.\\d{6}-\\d")
+    if (rx.test(str)) {
+        if (str_log !== "") {
+            mainArray.push(str_log)
+        }
 
-        this.filename = filename
+        str_log = str
 
-        if (files.length === 1) {
-            this.file = files[0]
         } else {
-            return
+            str_log = str_log+"-#-"+str
         }
-        
-        let reader = new FileReader()
-        reader.readAsText(this.file)
-        return reader
-
-        reader.onloadend = () => {
-            const text = reader.result
-            console.log(text);
-
-            return this.parseFile(text)
-        }
-        
-        reader.onerror = function() {
-            console.log(reader.error);
-            return
-        }
-        
+    // console.log(str_log)
+    
     }
 
+    //2. Получаем список параметров
+    console.log("parse")
+    const dictParam = new Map()
+    const mParams = []
 
-    static parseFile(text) {
-        
-        if (!text) {
-            alert("Пустой файл")
-            return
-        }
-        //1. Создаем массив строк склеивая их по регулярному выражению
-        const mainArray= []
+    const matchesFile = filename.match(/(\d{2})(\d{2})(\d{2})(\d{2})/)
+    const [, year, month, day, hour] = matchesFile
+    
+    for (let elem of mainArray) {
+        const matchesTime = elem.match(/(\d{2}):(\d{2}).(\d{6})/)
+        const [minute, second, msec] = matchesTime
+        const date_time_str = `20${year}-${month}-${day} ${hour}:${minute}:${second}.${msec}`
+        dictParam.set("time", date_time_str)
 
-        console.log("Start Parse")
-        let str_log = ""
-        for (let str of text.split('\n')) {
-        str.trim()
-
-        const rx = new RegExp("\\d{2}:\\d{2}.\\d{6}-\\d")
-        if (rx.test(str)) {
-            if (str_log !== "") {
-                mainArray.push(str_log)
+        let matches = elem.match(/,(\w+)='([^']+)|,(\w+)="([^"]+)|,([A-Za-z0-9А-Яа-я:]+)=([^,]+)/g)
+        for (let params of matches) {
+            if (params[0] === ",") {
+                params = params.slice(1)
             }
-
-            str_log = str
-
-            } else {
-                str_log = str_log+"-#-"+str
+            const mparams = params.split("=")
+            if (mparams.length == 2) {
+                dictParam.set(mparams[0].toLowerCase(), mparams[1].replace("'","").replace("''","").replace("-#-", '\n'))
             }
-        // console.log(str_log)
-        
         }
 
-        //2. Получаем список параметров
-        console.log("parse")
-        const dictParam = new Map()
-        const mParams = []
-
-        const matchesFile = this.filename.match(/(\d{2})(\d{2})(\d{2})(\d{2})/)
-        const [, year, month, day, hour] = matchesFile
-        
-        for (let elem of mainArray) {
-            const matchesTime = elem.match(/(\d{2}):(\d{2}).(\d{6})/)
-            const [minute, second, msec] = matchesTime
-            const date_time_str = `20${year}-${month}-${day} ${hour}:${minute}:${second}.${msec}`
-            dictParam.set("time", date_time_str)
-
-            let matches = elem.match(/,(\w+)='([^']+)|,(\w+)="([^"]+)|,([A-Za-z0-9А-Яа-я:]+)=([^,]+)/g)
-            for (let params of matches) {
-                if (params[0] === ",") {
-                    params = params.slice(1)
-                }
-                const mparams = params.split("=")
-                if (mparams.length == 2) {
-                    dictParam.set(mparams[0].toLowerCase(), mparams[1].replace("'","").replace("''","").replace("-#-", '\n'))
-                }
-            }
-
-            mParams.push(dictParam)
-        }
-
-
-
-        this.time_end = performance.now()
-        this.duration = this.time_end - this.time_start
-        // console.log('Выполнено! Время выполнения = %s ms', time_end-time_start)  
-        console.log(mParams)
-
-        this.mParams =mParams
-
-        mParamsStore.set(mParams)
-
-        return mParams
+        mParams.push(dictParam)
     }
+
+    // console.log(mParams)
+    return mParams
 }
