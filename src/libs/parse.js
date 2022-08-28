@@ -57,7 +57,9 @@ export function parseFile(filename, text) {
 
 function addToDict(mparams, dictParam, mColums) {
     let pName = mparams[0].toLowerCase()
-    const pValue = mparams[1].replace("'","").replace("''","").replace("-#-", '\n')
+    let pValue = mparams[1].replace("'","").replace("''","")
+    pValue = pValue.slice(-50)
+    pValue = pValue.replace("-#-", '\n')
 
     if (pName[0] === ",") {
         pName = pName.slice(1)

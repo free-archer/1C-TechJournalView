@@ -1,61 +1,39 @@
 <script>
-   import { get } from 'svelte/store';
-import {mParamsStore, mColumsStore} from '../libs/store'
+   import {mParamsStore, mColumsStore} from '../libs/store'
 
    import Cell from "./Cell.svelte";
+</script>
 
-   function Test() {
-      debugger
-      for (let params of $mParamsStore) {
-          for (let col of $mColumsStore) {
-             let paramValue = params.get(col)
-          }  
-      }
-   }
+<div class="table">
 
-    </script>
-    
-    <div class="table">
-    
-       <div class="table-row row-heder ">
-          {#each $mColumsStore as column}
-             <Cell paramValue={column} isHeder={true}/>
-          {/each}  
-       </div>
-    
-       {#each $mParamsStore as params}
-        <div class="table-row">
-    
-          {#each $mColumsStore as column}
-             <Cell paramValue={(params.get(column)) ? params.get(column) : ""}/>
-          {/each}  
-        </div>
-        {/each}
-    
-     </div>
+   <div class="table-row row-heder ">
+      {#each $mColumsStore as column}
+         <Cell paramValue={column} isHeder={true}/>
+      {/each}  
+   </div>
 
-     <!-- <button 
-     on:click={Test} 
-     class="button is-info">
-     Test
-   </button>   -->
-    
-   <style>
-      .table
-   {
-      display: flex;
-      flex-wrap:wrap;
-      flex-direction: column;
-      justify-content: center;
-      border: 1px #666 solid;
-   } 
+   {#each $mParamsStore as params}
+   <div class="table-row">
+      {#each $mColumsStore as column}
+         <Cell paramValue={(params.get(column)) ? params.get(column) : ""}/>
+      {/each}  
+   </div>
+   {/each}
 
+</div>
+    
+<style>
+.table
+{
+   display: flex;
+   flex-wrap:wrap;
+   flex-direction: column;
+} 
+
+.table-row
+{
+   display: flex;
+   flex-direction: row;
    
-   .table-row
-   {
-      display: flex;
-      flex-direction: row;
-      
-   }
-   
-   </style>
+}
+</style>

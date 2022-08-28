@@ -24,37 +24,37 @@
     reader.readAsText(files[0])
 
     reader.onloadend = () => {
-            const text = reader.result
+      let text = reader.result
 
-            const time_read = performance.now()
-            time_readStore.set(time_read-time_start)
-            console.log(`Прочитали файл за: ${time_read-time_start} ms`)  
+      const time_read = performance.now()
+      time_readStore.set(time_read-time_start)
+      console.log(`Прочитали файл за: ${time_read-time_start} ms`)  
 
-            const parseDate = parseFile(filename, text)
+      let parseDate = parseFile(filename, text)
+      text = undefined
 
-            const time_parse = performance.now()
-            time_parseStore.set(time_parse-time_start)
-            console.log(`Парсинг файла за: ${time_parse-time_start} ms`)  
+      const time_parse = performance.now()
+      time_parseStore.set(time_parse-time_start)
+      console.log(`Парсинг файла за: ${time_parse-time_start} ms`)  
 
-            mParamsStore.set(parseDate.mParams)
-            mColumsStore.set(Array.from(parseDate.mColums)) 
-            
-            const time_store = performance.now()
-            time_parseStore.set(time_store-time_start)
-            console.log(`Отправили в store за: ${time_store-time_start} ms`)  
-        } 
+      mParamsStore.set(parseDate.mParams)
+      mColumsStore.set(Array.from(parseDate.mColums)) 
+      console.log(`Кол столбцов: ${parseDate.mColums.size}`)
+      parseDate = undefined
+      
+      const time_store = performance.now()
+      time_parseStore.set(time_store-time_start)
+      console.log(`Отправили в store за: ${time_store-time_start} ms`)  
+    } 
     
     reader.onerror = function() {
         console.log(reader.error);
         return
     }
-   
   }
-
-
 </script>
 
-<div class="is-flex is-flex-direction-row is-justify-content-flex-start m-2">
+<div class="is-flex is-flex-direction-row is-justify-content-flex-start m-2 is-widescreen">
 
   <div class="input_file pr-3 is-widescreen">
     <input value={filename} class="input" type="text" placeholder="Text input">
@@ -87,9 +87,9 @@
   <Table />
 </div>
 
-<p>{$time_readStore}</p>
-<p>{$time_parseStore}</p>
-<p>{$time_storeStore}</p>
+<p>Время чтения файла: {$time_readStore}</p>
+<p>Время разбора лога: {$time_parseStore}</p>
+<p>Время записи в хранилище: {$time_storeStore}</p>
 
 <style>
   .input_file {
