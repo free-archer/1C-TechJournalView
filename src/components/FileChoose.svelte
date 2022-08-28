@@ -1,6 +1,6 @@
 <script>
   import {parseFile} from '../libs/parse.js'
-  import {mParamsStore, mColumsStore, time_readStore, time_parseStore, time_storeStore} from '../libs/store'
+  import {mParamsStore, mColumsStore, time_readStore, time_parseStore, time_storeStore, count_colums, count_row} from '../libs/store'
 
   import Table from './Table.svelte'
 
@@ -37,6 +37,8 @@
       time_parseStore.set(time_parse-time_start)
       console.log(`Парсинг файла за: ${time_parse-time_start} ms`)  
 
+      count_colums.set(parseDate.mColums.size)
+      count_row.set(parseDate.mParams.length)
       mParamsStore.set(parseDate.mParams)
       mColumsStore.set(Array.from(parseDate.mColums)) 
       console.log(`Кол столбцов: ${parseDate.mColums.size}`)
@@ -89,7 +91,8 @@
 
 <p>Время чтения файла: {$time_readStore}</p>
 <p>Время разбора лога: {$time_parseStore}</p>
-<p>Время записи в хранилище: {$time_storeStore}</p>
+<p>Количество колонок: {$count_colums}</p>
+<p>Количество строк: {$count_row}</p>
 
 <style>
   .input_file {
