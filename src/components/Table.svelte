@@ -1,15 +1,12 @@
 <script>
-   import {mParamsStore, mColumsStore} from '../libs/store'
+   import {mParamsStore, mColumsStore, step_paginations, current_page} from '../libs/store'
 
    import Cell from "./Cell.svelte";
    import Paginations from './Paginations.svelte';
 
-   //paginations
-   let start_paginations = 0
-   let step_paginations = 10
 </script>
 
-<div class="table">
+<div class="table is-small">
 
    <div class="table-row row-heder ">
       {#each $mColumsStore as column}
@@ -17,7 +14,7 @@
       {/each}  
    </div>
 
-   {#each $mParamsStore.slice(start_paginations, step_paginations) as params}
+   {#each $mParamsStore.slice($current_page-$step_paginations, $current_page) as params}
    <div class="table-row">
       {#each $mColumsStore as column}
          <Cell paramValue={(params.get(column)) ? params.get(column) : ""}/>
@@ -27,7 +24,10 @@
 
 </div>
 
-<Paginations />
+{#if ($mParamsStore.length > 0)}
+   <Paginations />   
+{/if}
+
     
 <style>
 .table

@@ -31,9 +31,11 @@ export function parseFile(filename, text) {
 
     const matchesFile = filename.match(/(\d{2})(\d{2})(\d{2})(\d{2})/)
     const [, year, month, day, hour] = matchesFile
-    
+    let i = 1
     for (let elem of mainArray) {
         const dictParam = new Map()
+        dictParam.set("N", i++)
+        mColums.add("N")
 
         const matchesTime = elem.match(/(\d{2}):(\d{2}).(\d{6})/)
         const [minute, second, msec] = matchesTime
