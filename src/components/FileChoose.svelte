@@ -1,11 +1,14 @@
 <script>
   import {parseFile} from '../libs/parse.js'
-  import {mParamsStore, mColumsStore, time_readStore, time_parseStore, time_storeStore, count_colums, count_row} from '../libs/store'
+  import {mParamsStore, mColumsStore} from '../libs/store'
 
   import Table from './Table.svelte'
 
   let filename = ""
   let files = []
+
+  let count_colums = 0, count_row = 0
+    let interval_read = 0, interval_parse = 0
     
   function parseTJ() {
     if (filename == "") {
@@ -27,26 +30,22 @@
       let text = reader.result
 
       const time_read = performance.now()
-      time_readStore.set(time_read-time_start)
-      console.log(`Прочитали файл за: ${time_read-time_start} ms`)  
+      interval_read = time_read-time_start
+      console.log(`Прочитали файл за: ${interval_read} ms`)  
 
       let parseDate = parseFile(filename, text)
       text = undefined
 
       const time_parse = performance.now()
-      time_parseStore.set(time_parse-time_start)
-      console.log(`Парсинг файла за: ${time_parse-time_start} ms`)  
+      interval_parse =time_parse-time_start
+      console.log(`Парсинг файла за: ${interval_parse} ms`)  
 
-      count_colums.set(parseDate.mColums.size)
-      count_row.set(parseDate.mParams.length)
+      count_colums = parseDate.mColums.size
+      count_row = parseDate.mParams.length
       mParamsStore.set(parseDate.mParams)
       mColumsStore.set(Array.from(parseDate.mColums)) 
-      console.log(`Кол столбцов: ${parseDate.mColums.size}`)
+      console.log(`Кол столбцов: ${count_colums}`)
       parseDate = undefined
-      
-      const time_store = performance.now()
-      time_parseStore.set(time_store-time_start)
-      console.log(`Отправили в store за: ${time_store-time_start} ms`)  
     } 
     
     reader.onerror = function() {
@@ -89,10 +88,10 @@
   <Table />
 </div>
 
-<p>Время чтения файла: {$time_readStore}</p>
-<p>Время разбора лога: {$time_parseStore}</p>
-<p>Количество колонок: {$count_colums}</p>
-<p>Количество строк: {$count_row}</p>
+<p>Время чтения файла: {interval_read}</p>
+<p>Время разбора лога: {interval_parse}</p>
+<p>Количество колонок: {count_colums}</p>
+<p>Количество строк: {count_row}</p>
 
 <style>
   .input_file {
