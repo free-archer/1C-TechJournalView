@@ -6,4 +6,5 @@ export const count_row = writable(0)
 
 export const step_paginations = writable(10)
 export const current_page = writable(10)
+export const Pages = writable([1])
 
