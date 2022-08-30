@@ -1,37 +1,59 @@
 <script>
-  import {step_paginations, current_page, count_row, Pages, mParamsStore} from '../libs/store'
+  import {step_paginations, current_page, count_row, Pages, mParamsStore, miss_start} from '../libs/store'
   
   let arPages = []
 
   mParamsStore.subscribe(() => {
     arPages = []
+
     const pages = Math.ceil($count_row / $step_paginations)
     console.log(`Страниц: ${pages}`)
     
+    let has_miss = false
     for(let i=1; i<=pages; i++) {
-      arPages.push(i*$step_paginations)
+      let page = i*$step_paginations
+
+      if (i <= $miss_start || i >= pages-$miss_start) {
+        arPages.push(page)
+      } else if (!has_miss) {
+        arPages.push(-1)
+        has_miss = true
+      }
     }
     $Pages = arPages
   })
 
   function changePage(elem) {
-    $current_page = elem.target.attributes.id.value
+    $current_page = +elem.target.attributes.id.value
+    console.log($current_page)
+  }
+
+  function nextPage() {
+    $current_page = $current_page+$step_paginations
     console.log($current_page)
   }
 </script>
 
 <nav class="pagination is-small" role="navigation" aria-label="pagination">
     <a class="pagination-previous is-disabled" title="This is the first page">Previous</a>
-    <a class="pagination-next">Next page</a>
+    <a on:click={nextPage} class="pagination-next">Next page</a>
     <ul class="pagination-list">
 
       {#each arPages as page}
-      <li>
-          <a on:click={changePage} 
-          class="pagination-link {($current_page==page) ? "is-current" : ""}" 
-          id="{page}" aria-label="{page}" aria-current="page">{page}
-        </a>
-      </li>
+
+      {#if page === -1}
+        <li>
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+      {:else}
+        <li>
+            <a on:click={changePage} 
+            class="pagination-link {($current_page==page) ? "is-current" : ""}" 
+            id="{page}" aria-label="{page}" aria-current="page">{page}
+          </a>
+        </li>
+      {/if}
+
       {/each}
 
     </ul>
