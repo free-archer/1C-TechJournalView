@@ -11,11 +11,15 @@
     calcPagination()
   })
 
+  step_paginations.subscribe(() => {
+    calcPagination()
+  })
+
   function calcPagination() {
     arPages = []
 
     console.log(`Страниц: ${$count_row / $step_paginations}`)
-    
+    // debugger
     const step = Math.ceil($step_paginations/2)*$step_paginations
     let start = ($current_page > step) ? $current_page - step : $step_paginations
     let stop = $current_page + step
