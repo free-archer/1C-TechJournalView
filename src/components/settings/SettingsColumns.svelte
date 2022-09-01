@@ -1,6 +1,5 @@
 <script>
     import {mParamsStore, mColumsStore, count_row, current_page, step_paginations, showedColums}  from '../libs/store'
-    import SettingsColumns from './settings/SettingsColumns.svelte'
 
     let Columns = []
 
@@ -28,18 +27,15 @@
     }
 </script>
 
-<article class="panel is-warning">
-    <p class="panel-heading">
-      Настройки
-    </p>
-    <p class="panel-tabs">
-      <a class="is-active">Выбор колонок</a>
-      <a>Настройка таблицы</a>
-      <a>Private</a>
-      <a>Sources</a>
-      <a>Forks</a>
-    </p>
 
-    <SettingsColumns />    
-
-</article>
+<div class="panel-block is-flex">
+    <div class="box is-flex is-flex-direction-column">
+        Отметте колонки которые будут отбображаться
+        {#each Columns as column, id}
+            <label class="checkbox">
+                <input type="checkbox" bind:checked={column.checked} on:change={checkedColumn}>
+                {id} {column.name}
+            </label>
+        {/each}
+    </div>
+</div>
