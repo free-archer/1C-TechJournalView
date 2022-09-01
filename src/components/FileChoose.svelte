@@ -1,6 +1,6 @@
 <script>
   import {parseFile} from '../libs/parse.js'
-  import {mParamsStore, mColumsStore, count_row} from '../libs/store'
+  import {mParamsStore, mColumsStore, count_row, current_page, step_paginations} from '../libs/store'
 
   import Table from './Table.svelte'
 
@@ -22,6 +22,8 @@
     }
         
     const time_start = performance.now()
+
+    $current_page = $step_paginations
 
     let reader = new FileReader()
     reader.readAsText(files[0])
