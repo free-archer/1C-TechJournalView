@@ -1,5 +1,5 @@
 <script>
-  import {step_paginations, current_page, count_row, Pages, mParamsStore, miss_start} from '../libs/store'
+  import {step_paginations, current_page, count_row, Pages, mParamsStore} from '../libs/store'
   
   let arPages = []
 
@@ -32,7 +32,7 @@
     if (arPages[arPages.length-1] < $count_row ) {
       arPages.push(arPages[arPages.length-1]+$step_paginations)
     }
-    
+
     $Pages = arPages    
   }
 

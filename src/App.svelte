@@ -1,5 +1,7 @@
 <script>
 import FileChoose from './components/FileChoose.svelte'
+import Settings from './components/Settings.svelte';
+
 
 let name = "name"
 let activeTab = "TJ"
@@ -11,7 +13,7 @@ const switchTab = tab => () => {
 
 </script>
 
-<main class="container is-widescreen">
+<main id="mainContainer" class="container is-widescreen">
 
   <div class="tabs is-centered is-toggle m-2">
     <ul>
@@ -28,7 +30,7 @@ const switchTab = tab => () => {
           class:is-active={activeTab == "Setting"} 
           on:click={switchTab("Setting")} 
           class="button is-warning">
-          Технологический журнал
+          Настройки
         </button>
       </li>
     </ul>
@@ -36,6 +38,8 @@ const switchTab = tab => () => {
 
   {#if (activeTab == "TJ")}
     <FileChoose />
+  {:else if (activeTab == "Setting")}
+    <Settings />
   {/if}
 
 </main>

@@ -1,10 +1,20 @@
 <script>
+  import {columnWidth, showedColums} from '../libs/store'
+
   export let paramValue;
   export let isHeder=false;
+
+  console.log($columnWidth)
+
+  let styleCell;
+  columnWidth.subscribe(() => {
+    styleCell = "width:"+$columnWidth+"px"
+  })
+
 </script>
 
 
-<div class="table-cell p-1 {isHeder ? 'row-heder ' : ''}">
+<div class="table-cell p-1 {isHeder ? 'row-heder ' : ''}" style={styleCell}>
   {paramValue}
 </div>
 
@@ -14,7 +24,6 @@
   {
      /* display: table-cell; */
      display: block;
-     width: 80px;
      word-wrap: break-word;
      border: 1px #666 solid;
   }
