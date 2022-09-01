@@ -4,24 +4,37 @@
   let arPages = []
 
   mParamsStore.subscribe(() => {
+    calcPagination()
+  })
+
+  current_page.subscribe(() => {
+    calcPagination()
+  })
+
+  function calcPagination() {
     arPages = []
 
-    const pages = Math.ceil($count_row / $step_paginations)
-    console.log(`Страниц: ${pages}`)
+    console.log(`Страниц: ${$count_row / $step_paginations}`)
     
+    const step = Math.ceil($step_paginations/2)*$step_paginations
+    let start = ($current_page > step) ? $current_page - step : $step_paginations
+    let stop = $current_page + step
     let has_miss = false
-    for(let i=1; i<=pages; i++) {
-      let page = i*$step_paginations
-
-      if (i <= $miss_start || i >= pages-$miss_start) {
-        arPages.push(page)
+    for(let i=start; i<=$count_row ; i += $step_paginations) {
+      if (i <= stop || i >= $count_row - step) {
+        arPages.push(i)
       } else if (!has_miss) {
         arPages.push(-1)
         has_miss = true
       }
     }
-    $Pages = arPages
-  })
+
+    if (arPages[arPages.length-1] < $count_row ) {
+      arPages.push(arPages[arPages.length-1]+$step_paginations)
+    }
+    
+    $Pages = arPages    
+  }
 
   function changePage(elem) {
     $current_page = +elem.target.attributes.id.value
