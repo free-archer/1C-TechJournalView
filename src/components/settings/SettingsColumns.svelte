@@ -1,5 +1,5 @@
 <script>
-    import {mParamsStore, mColumsStore, count_row, current_page, step_paginations, showedColums}  from '../libs/store'
+    import {mParamsStore, mColumsStore, count_row, current_page, step_paginations, showedColums}  from '../../libs/store'
 
     let Columns = []
 

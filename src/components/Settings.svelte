@@ -1,31 +1,14 @@
 <script>
-    import {mParamsStore, mColumsStore, count_row, current_page, step_paginations, showedColums}  from '../libs/store'
     import SettingsColumns from './settings/SettingsColumns.svelte'
+import SettingsTable from './settings/SettingsTable.svelte';
+    const panels = ["panelSettings"]
 
-    let Columns = []
+    let activeTab = "TabColums"
 
-    mColumsStore.subscribe(() => {
-        let mColums = []
-        if ($mColumsStore.length == 0) {
-            mColums = $showedColums
-        } else {
-            mColums = $mColumsStore
-        }
-        Columns = mColums.map((elem, ind) => {
-            return {
-                "name" : elem,
-                "checked" : $showedColums.includes(elem)
-            }
-        })
-        
-        console.log(Columns)
-    })
-
-    function checkedColumn(e) {
-        const mColumn = Columns.filter(val => val.checked).map(val => val.name)
-        console.log(mColumn)
-        showedColums.set(mColumn) 
-    }
+    function switchTab (e) {
+        activeTab = e.target.id; 
+        console.log(activeTab)
+    }    
 </script>
 
 <article class="panel is-warning">
@@ -33,13 +16,21 @@
       Настройки
     </p>
     <p class="panel-tabs">
-      <a class="is-active">Выбор колонок</a>
-      <a>Настройка таблицы</a>
+
+      
+    <a id="TabColums" on:click={switchTab} class:is-active={activeTab == "TabColums"}>Выбор колонок</a>
+
+    <a id="TabTable" on:click={switchTab} class:is-active={activeTab == "TabTable"}> Настройка таблицы</a>
+
       <a>Private</a>
       <a>Sources</a>
       <a>Forks</a>
     </p>
 
-    <SettingsColumns />    
+    {#if activeTab == "TabColums"}
+        <SettingsColumns />    
+    {:else if activeTab == "TabTable"}
+        <SettingsTable />
+    {/if}
 
 </article>
